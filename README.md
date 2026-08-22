@@ -40,7 +40,7 @@ AmazonSNSFullAccess
 ```
 5. Clone [this](https://github.com/yeshwanthlm/Stock-Market-Real-Time-Data-Analytics-Pipeline-on-AWS/tree/main) repository on your local machine:
 ```sh
-git clone https://github.com/yeshwanthlm/Stock-Market-Real-Time-Data-Analytics-Pipeline-on-AWS.git
+git clone https://github.com/Harshchafle/Stock-Data-Analysis.git
 ```
 
 ### Required SQL Queries: 
