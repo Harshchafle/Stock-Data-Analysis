@@ -1,0 +1,102 @@
+Service Used:
+    1. Amazon Kinesis Data Streams  - Ingest Stock data in real time.
+    2. Aws Lambda                   - Processes Stock data ad detects stock trends.
+    3. Amazon DynamoDB              - Stores structured Stock data for quick lookups.
+    4. Amazon S3                    - Stores raw stock data for historical analysis.
+    5. Amazon Athena                - Queries stock data directly from S3.
+    6. Amazon SNS                   - Sends Stock trend alerts via Email/SMS.
+    7. IAM Roles/Policies           - Manages Permission Securely
+
+Estimated Time and Cost:
+    * This project is estimated to take about 2-3 hours
+    * Cost: ~$1 to ~$2
+
+Results at end:
+    * Event-driven architecture with Amazon Kinesis for real-time data ingestion.
+    * Lambda based anomaly detection and stoc trend evaluation.
+    * Low-latency storage in DynamoDB for faster access to processed data.
+    * Historical data archiving in Amazon S3 and querying by means of Athena.
+    * Real-time alerts via Amazon SNS(Email/SMS) for significant stock movements.
+    * Secure and cost optimized design using IAM and serverless technologies.
+
+
+AWS STEPS :
+1. IAM :    
+    a. goto IAM user and create user if not exist
+    b. create
+        AWS Access Key ID [None]: ?
+        AWS Secret Access Key [None]: ?
+    c. come to terminal and run "aws configure"
+    d. put values and default region, output can be left
+
+2. IAM ROLES :
+    a. Create aws role by following STEPS
+    b. entity type aws Service
+    c. use case AWS Lambda  
+    d. add permission policies which we require
+        1. AmazonDyanamoDBFullAccess
+        2. AWSLambdaBasicExecutionRole
+        3. AmazonKinesisFullAccess
+        4. AmazonDynamoDBFullAccess
+        5. AmazonS3FullAccess
+
+3. Amazon Kinesis
+    goto Amazon Kinesis
+    1. name it 
+    2. capacity - on demand
+    3. max record size = 1 MB 
+    4. others default and create kinesis datastream
+
+4. install and run step 1 py script
+
+5. Amazon DynamoDB  - Preprocessed data(done in get-stock-data script)
+    got dyanamo db and create table
+    1. name it
+    2. select partition key
+    3. select sort key
+    4. create table 
+
+6. AWS Lambda function
+    goto Lambda and create function
+    1. name it
+    2. select runtime
+    3. select IAM role
+    4. create function
+    5. add trigger of kinesis
+    6. change batch size whatever we want n(records) before trigger
+    7. add trigger
+    8. copy lambda function from step 2 and paste in lambda function on aws
+
+7. Aws Glue:
+    goto Glue
+    1. on left panel goto databases and create database
+    2. below databases click on tables and create table
+    3. add table and select data from s3
+    4. add schema from step 3
+    5. save schema other default and create table
+
+8. Athena Result S3 Bucket
+    1. create S3 bucket for Athena results
+
+9. Amazon Athena - serverless sql querying
+    1. goto Athena
+    2. goto Query Editor tabs and select data source
+    3. in query settings select manage query result location(choose athena result s3)
+    4. select table
+    5. run query (SELECT * FROM stock-data LIMIT 10)
+    6. run query ( top 5 highest price shanged stocks )
+    7. run query ( find avg of stock prices )
+    8. run query ( to find anomolous stock price changes )
+
+10. SNS 
+    1. goto SNS
+    2. create topic (standard, and name it) 
+    3. create subsription
+    4. select protocol as Email and give target email
+    5. confirmation email will be received on target email
+
+11. Create another Lambda function
+    1. select IAM and create function
+    2. add trigger
+    3. select DynamoDB
+    4. select batch size
